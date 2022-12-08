@@ -25,3 +25,7 @@ app.get('/board', function (req, res) {
 app.get('/service', function (req, res) {
     res.sendFile(__dirname + '/service.html')
 })
+
+app.get('/login', function (req, res) {
+    res.sendFile(__dirname + '/login.html')
+})
