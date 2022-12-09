@@ -40,6 +40,18 @@ app.get('/login', function (req, res) {
     res.sendFile(__dirname + '/login.html')
 })
 
+app.get('/view', function (req, res) {
+    res.sendFile(__dirname + '/view.html')
+})
+
+app.get('/write', function (req, res) {
+    res.sendFile(__dirname + '/write.html')
+})
+
+app.get('/edit', function (req, res) {
+    res.sendFile(__dirname + '/edit.html')
+})
+
 app.post('/add', function(req, res){
     db.collection('login').findOne({id:req.body.id} ,function(err, result){
         if(result == null){
