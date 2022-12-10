@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const express = require('express');
 const app = express();
 app.use(express.static('./'));
@@ -15,6 +16,10 @@ MongoClient.connect('mongodb+srv://hunterspin:a862842@cluster0.qr6s3gn.mongodb.n
     console.log('listening on 8090')
     })
 })
+
+const createHashedPassword = (password) => {
+    return crypto.createHash("sha512").update(password).digest("base64");
+};
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html')
@@ -55,11 +60,11 @@ app.get('/edit', function (req, res) {
 app.post('/add', function(req, res){
     db.collection('login').findOne({id:req.body.id} ,function(err, result){
         if(result == null){
-            db.collection('login').insertOne({id:req.body.id , email:req.body.email, password: req.body.password}, function(err, result){
+            db.collection('login').insertOne({id:req.body.id , email:req.body.email, password: createHashedPassword(req.body.password)}, function(err, result){
                 console.log("save complete...");
                 console.log(req.body.id);
                 console.log(req.body.email);
-                console.log(req.body.password);
+                console.log(createHashedPassword(req.body.password));
             })
             res.sendFile(__dirname + '/index.html');
         }
@@ -75,7 +80,7 @@ app.post('/find', function(req, res){
         if(result == null){
             res.send("<script>alert('아이디 혹은 비밀번호가 틀렸거나 존재하지 않습니다.');history.go(-1);</script>");
         }
-        else if(result.password == req.body.password){
+        else if(result.password == createHashedPassword(req.body.password)){
             res.sendFile(__dirname + '/index.html');
         }
         else{
