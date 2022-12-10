@@ -6,7 +6,11 @@ const bodyParser= require('body-parser')
 app.use(express.urlencoded({ extended: true }));
 const MongoClient = require('mongodb').MongoClient
 
+app.set('view engine', 'ejs');
+
+
 var db;
+var isLogin = 0;
 MongoClient.connect('mongodb+srv://hunterspin:a862842@cluster0.qr6s3gn.mongodb.net/?retryWrites=true&w=majority', function(err, client){
     if (err) return console.log(err)
     db = client.db('member');
@@ -50,14 +54,24 @@ app.get('/view', function (req, res) {
 })
 
 app.get('/write', function (req, res) {
-    res.sendFile(__dirname + '/write.html')
+    if(isLogin == 1){
+        res.sendFile(__dirname + '/write.html');
+    }
+    else{
+        res.send("<script>alert('관리자 로그인을 해주세요');history.go(-1);</script>");
+    }
 })
 
 app.get('/edit', function (req, res) {
-    res.sendFile(__dirname + '/edit.html')
+    if(isLogin){
+        res.sendFile(__dirname + '/edit.html')
+    }
+    else{
+        res.send("<script>alert('로그인을 해주세요');history.go(-1);</script>");
+    }
 })
 
-app.post('/add', function(req, res){
+app.post('/add', function(req, res){//회원가입 할때
     db.collection('login').findOne({id:req.body.id} ,function(err, result){
         if(result == null){
             db.collection('login').insertOne({id:req.body.id , email:req.body.email, password: createHashedPassword(req.body.password)}, function(err, result){
@@ -66,7 +80,7 @@ app.post('/add', function(req, res){
                 console.log(req.body.email);
                 console.log(createHashedPassword(req.body.password));
             })
-            res.sendFile(__dirname + '/index.html');
+            res.sendFile(__dirname + '/zLogin_index.html');
         }
         else{
             res.send("<script>alert('이미 존재하는 아이디입니다.');history.go(-1);</script>");
@@ -74,14 +88,15 @@ app.post('/add', function(req, res){
     })
 })
 
-app.post('/find', function(req, res){
+app.post('/find', function(req, res){//로그인 할때
     db.collection('login').findOne({id:req.body.id} ,function(err, result) {
         if (err) throw err;
         if(result == null){
             res.send("<script>alert('아이디 혹은 비밀번호가 틀렸거나 존재하지 않습니다.');history.go(-1);</script>");
         }
         else if(result.password == createHashedPassword(req.body.password)){
-            res.sendFile(__dirname + '/index.html');
+            isLogin = 1;
+            res.sendFile(__dirname + '/zLogin_index.html');
         }
         else{
             res.send("<script>alert('아이디 혹은 비밀번호가 틀렸거나 존재하지 않습니다.');history.go(-1);</script>");
