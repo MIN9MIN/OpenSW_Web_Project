@@ -104,6 +104,26 @@ app.post('/find', function(req, res){//로그인 할때
       })
 })
 
+app.post('/logout', function(req, res){//로그인 할때
+    isLogin = 0;
+})
+
 app.get('/signUp', function (req, res) {
     res.sendFile(__dirname + '/signUp.html');
+})
+
+app.get('/zLogin_index', function (req, res) {
+    res.sendFile(__dirname + '/zLogin_index.html')
+})
+
+app.get('/zLogin_introduce', function (req, res) {
+    res.sendFile(__dirname + '/zLogin_introduce.html')
+})
+
+app.get('/zLogin_notice', function (req, res) {
+    res.sendFile(__dirname + '/zLogin_notice.html')
+})
+
+app.get('/zLogin_board', function (req, res) {
+    res.sendFile(__dirname + '/zLogin_board.html')
 })
