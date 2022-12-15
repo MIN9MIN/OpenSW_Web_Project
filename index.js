@@ -83,7 +83,7 @@ app.post('/add', function(req, res){//회원가입 할때
                 console.log(req.body.email);
                 console.log(createHashedPassword(req.body.password));
             })
-            res.sendFile(__dirname + '/zLogin_index.html');
+            res.sendFile(__dirname + '/index.html');
         }
         else{
             res.send("<script>alert('이미 존재하는 아이디입니다.');history.go(-1);</script>");
