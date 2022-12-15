@@ -58,12 +58,12 @@ app.get('/write', function (req, res) {
         res.sendFile(__dirname + '/write.html');
     }
     else{
-        res.send("<script>alert('관리자 로그인을 해주세요');history.go(-1);</script>");
+        res.send("<script>alert('로그인을 해주세요');history.go(-1);</script>");
     }
 })
 
 app.get('/edit', function (req, res) {
-    if(isLogin){
+    if(isLogin == 1){
         res.sendFile(__dirname + '/edit.html')
     }
     else{
