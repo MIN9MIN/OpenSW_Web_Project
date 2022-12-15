@@ -26,30 +26,33 @@ const createHashedPassword = (password) => {
 };
 
 app.get('/', function (req, res) {
+    isLogin = 0;
     res.sendFile(__dirname + '/index.html')
 })
 
 app.get('/introduce', function (req, res) {
+    isLogin = 0;
     res.sendFile(__dirname + '/introduce.html')
 })
 
 app.get('/notice', function (req, res) {
+    isLogin = 0;
     res.sendFile(__dirname + '/notice.html')
 })
 
 app.get('/board', function (req, res) {
+    isLogin = 0;
     res.sendFile(__dirname + '/board.html')
 })
 
-app.get('/service', function (req, res) {
-    res.sendFile(__dirname + '/service.html')
-})
 
 app.get('/login', function (req, res) {
+    isLogin = 0;
     res.sendFile(__dirname + '/login.html')
 })
 
 app.get('/view', function (req, res) {
+    isLogin = 0;
     res.sendFile(__dirname + '/view.html')
 })
 
@@ -104,9 +107,6 @@ app.post('/find', function(req, res){//로그인 할때
       })
 })
 
-app.post('/logout', function(req, res){//로그인 할때
-    isLogin = 0;
-})
 
 app.get('/signUp', function (req, res) {
     res.sendFile(__dirname + '/signUp.html');
